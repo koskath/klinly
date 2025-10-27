@@ -1,102 +1,13 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-  <meta charset="UTF-Digital">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>klinly - Εγγραφή</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background-color: #1a3d7c; /* lighter, modern blue */
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
-
-    .logo {
-      font-size: 2em;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-
-    .logo span {
-      color: #7ec8e3; /* light blue accent */
-    }
-
-    h2 {
-      font-size: 1.6em;
-      margin-bottom: 15px;
-    }
-
-    p {
-      font-size: 1em;
-      color: #d0e2f2;
-      margin-bottom: 25px;
-      max-width: 300px;
-      line-height: 1.4;
-    }
-
-    /* */
-    form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    /* */
-
-
-    input[type="email"] {
-      padding: 12px 18px;
-      width: 280px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      color: #333;
-    }
-
-    input[type="email"]::placeholder {
-      color: #777;
-    }
-
-    input[type="email"]:focus {
-      outline: 2px solid #7ec8e3;
-    }
-
-    /* */
-    button {
-      margin-top: 15px;
-      padding: 12px 20px;
-      width: 316px; /* Match the input width */
-      background-color: #7ec8e3;
-      color: #1a3d7c;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    button:hover {
-      background-color: #a0d8ee;
-    }
-    /* */
-
-  </style>
-</head>
+  </head>
 <body>
   <div class="logo">klinly<span>✨</span></div>
   <h2>Γίνε ο πρώτος που θα εγγραφεί!</h2>
-  <p>Εγγράψου για να ενημερωθείς μόλις η εφαρμογή είναι έτοιμη στις 20 Νοεμβρίου</p>
+  <p>Εγγραφείτε για να ενημερωθείτε μόλις η εφαρμογή μας είναι έτοιμη — σε περίπου 2 εβδομάδες!</p>
   
-  <form method="POST" action="https://script.google.com/macros/s/AKfycbzmpOn8PWl1u0FrZ3_NcQDX6KZ9W3xti6AIDQXokHxE2OSQ6eKp14BZPH4SdAMr2gwUYA/exec">
+  <form id="email-form">
     
     <input 
       type="email" 
@@ -104,8 +15,39 @@
       placeholder="Εισάγετε το email σας" 
       required>
 
-    <button type="submit">Εγγραφή</button>
+    <button type="submit" id="submit-button">Εγγραφή</button>
 
   </form>
+  <script>
+    // 1. Get the form and the URL from your Apps Script
+    const form = document.getElementById('email-form');
+    const button = document.getElementById('submit-button');
+    const scriptURL = 'YOUR_WEB_APP_URL_GOES_HERE'; // <-- Paste your script URL here
+    const thankYouURL = 'https://koskath.github.io/klinly/thank-you.html'; // Your thank-you page
+
+    // 2. Add an event listener to the form
+    form.addEventListener('submit', e => {
+      e.preventDefault(); // Stop the form from submitting normally
+      
+      // 3. Disable the button to prevent multiple clicks
+      button.disabled = true;
+      button.innerText = 'Αποστολή...';
+
+      // 4. Send the data using 'fetch'
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          // 5. If successful, redirect to the thank you page
+          console.log('Success!', response);
+          window.location.href = thankYouURL;
+        })
+        .catch(error => {
+          // 6. If an error, re-enable the button and show an alert
+          console.error('Error!', error.message);
+          button.disabled = false;
+          button.innerText = 'Εγγραφή';
+          alert('Something went wrong, please try again.');
+        });
+    });
+  </script>
   </body>
 </html>
