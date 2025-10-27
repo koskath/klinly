@@ -19,29 +19,26 @@
 
   </form>
   <script>
-    // 1. Get the form and the URL from your Apps Script
     const form = document.getElementById('email-form');
     const button = document.getElementById('submit-button');
-    const scriptURL = 'YOUR_WEB_APP_URL_GOES_HERE'; // <-- Paste your script URL here
-    const thankYouURL = 'https://koskath.github.io/klinly/thank-you.html'; // Your thank-you page
+    
+    // MAKE SURE YOU PASTED YOUR URL HERE
+    const scriptURL = 'YOUR_WEB_APP_URL_GOES_HERE'; 
+    
+    const thankYouURL = 'https://koskath.github.io/klinly/thank-you.html'; 
 
-    // 2. Add an event listener to the form
     form.addEventListener('submit', e => {
-      e.preventDefault(); // Stop the form from submitting normally
+      e.preventDefault(); // This is the line that's failing
       
-      // 3. Disable the button to prevent multiple clicks
       button.disabled = true;
       button.innerText = 'Αποστολή...';
 
-      // 4. Send the data using 'fetch'
       fetch(scriptURL, { method: 'POST', body: new FormData(form)})
         .then(response => {
-          // 5. If successful, redirect to the thank you page
-          console.log('Success!', response);
+          // This part will run now, redirecting you
           window.location.href = thankYouURL;
         })
         .catch(error => {
-          // 6. If an error, re-enable the button and show an alert
           console.error('Error!', error.message);
           button.disabled = false;
           button.innerText = 'Εγγραφή';
